@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 
 const initialFormValues = {
     title: '',
     description: '',
 }
 
-const Form = ({ todoAdd }) => {
+const Form = ({ todoAdd, todoEdit }) => {
     const [formValues, setFormValues] = useState(initialFormValues);
     const { title, description } = formValues;
     const [error, setError] = useState(null);
-    const [succesMessage, setSuccesMessage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    useEffect(() => {
+        if (todoEdit) {
+            setFormValues(todoEdit);
+        }
+    }, [todoEdit])
 
     const handleInputChange = (e) => {
 
@@ -34,17 +41,18 @@ const Form = ({ todoAdd }) => {
         console.log(formValues);
         todoAdd(formValues);
         setFormValues(initialFormValues);
-        setSuccesMessage('Agregado con éxito');
+        setSuccessMessage('Agregado con éxito');
 
 
         setTimeout(() => {
-            setSuccesMessage(null);
+            setSuccessMessage(null);
         }, 2000)
         setError(null);
     }
 
     return (
         <div>
+            <h1>{todoEdit ? 'Editar tarea' : 'Nueva tarea'}</h1>
             <form onSubmit={(e) => handleSubmit(e)} className="form text-light">
                 <input
                     type="text"
@@ -78,9 +86,9 @@ const Form = ({ todoAdd }) => {
             }
 
             {
-                succesMessage && (
+                successMessage && (
                     <div className="alert alert-success mt-2">
-                        {succesMessage}
+                        {successMessage}
                     </div>
                 )
             }

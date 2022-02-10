@@ -27,6 +27,7 @@ const initialTodos = [
 const App = () => {
 
     const [todos, setTodos] = useState(initialTodos);
+    const [todoEdit, setTodoEdit] = useState(null);
 
     const todoDelete = (todoId) => {
         const changedTodos = todos.filter(todo => todo.id !== todoId);
@@ -60,17 +61,19 @@ const App = () => {
         <section className='container mt-5 '>
 
             <div className='flex-column mt-3 d-flex align-items-center'>
-                <div className='col-7'>
+                <div className='col-8'>
                     < TodoForm
                         todoAdd={todoAdd}
+                        todoEdit={todoEdit}
                     />
                 </div>
-                <div className='col-7'>
+                <div className='col-8'>
 
                     < TodoList
                         todos={todos}
                         todoDelete={todoDelete}
                         todoToggleCompleted={todoToggleCompleted}
+                        setTodoEdit={setTodoEdit}
                     />
 
                 </div>

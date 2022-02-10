@@ -2,7 +2,7 @@ import React from 'react';
 import Todo from './Todo';
 
 
-const TodoList = ({ todos, todoDelete, todoToggleCompleted }) => {
+const TodoList = ({ todos, todoDelete, todoToggleCompleted, setTodoEdit }) => {
     return (
         <div className="">
             <h1>Soy TodoList</h1>
@@ -13,6 +13,7 @@ const TodoList = ({ todos, todoDelete, todoToggleCompleted }) => {
                         key={todo.id}
                         todoDelete={todoDelete}
                         todoToggleCompleted={todoToggleCompleted}
+                        setTodoEdit={setTodoEdit}
                     />
                 ))
             }
