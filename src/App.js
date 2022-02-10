@@ -1,37 +1,30 @@
-import React, { useState } from 'react';
-import TodoList from './components/TodoList';
+import React, { useEffect, useState } from 'react';
 import TodoForm from './components/TodoForm';
-
+import TodoList from './components/TodoList';
 
 const initialTodos = [
-    {
-        id: 1,
-        title: 'Todo #1',
-        description: 'Desc del Todo #1',
-        completed: true
-    },
-    {
-        id: 2,
-        title: 'Todo #2',
-        description: 'Desc del Todo #2',
-        completed: false
-    },
-    {
-        id: 3,
-        title: 'Todo #3',
-        description: 'Desc del Todo #3',
-        completed: true
-    }
+
 ];
+
+const localTodos = JSON.parse(localStorage.getItem('todos'));
 
 const App = () => {
 
-    const [todos, setTodos] = useState(initialTodos);
+    const [todos, setTodos] = useState(localTodos || initialTodos);
     const [todoEdit, setTodoEdit] = useState(null);
 
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos])
+
     const todoDelete = (todoId) => {
+        if (todoEdit && todoId === todoEdit.id) {
+            setTodoEdit(null)
+        }
+
         const changedTodos = todos.filter(todo => todo.id !== todoId);
         setTodos(changedTodos);
+
     }
 
     const todoToggleCompleted = (todoId) => {
@@ -43,31 +36,44 @@ const App = () => {
     const todoAdd = (todo) => {
 
         const newTodo = {
-            id: 48,
+            id: Date.now(),
             ...todo,
             completed: false
         }
+
         const changedTodos = [
-            ...todos,
-            newTodo
+            newTodo,
+            ...todos
         ]
 
-        console.log('newTodo: ', newTodo);
-        console.log('changedTodos: ', changedTodos);
-
-        setTodos(changedTodos)
+        setTodos(changedTodos);
     }
+
+    const todoUpdate = (todoEdit) => {
+
+        const changedTodos = todos.map(todo => {
+            if (todo.id === todoEdit.id)
+                return todoEdit
+            else
+                return todo
+        });
+
+        setTodos(changedTodos);
+    }
+
     return (
         <section className='container mt-5 '>
 
             <div className='flex-column mt-3 d-flex align-items-center'>
-                <div className='col-8'>
+                <div className='col-7'>
                     < TodoForm
-                        todoAdd={todoAdd}
                         todoEdit={todoEdit}
+                        todoAdd={todoAdd}
+                        todoUpdate={todoUpdate}
+                        setTodoEdit={setTodoEdit}
                     />
                 </div>
-                <div className='col-8'>
+                <div className='col-7'>
 
                     < TodoList
                         todos={todos}
@@ -81,6 +87,5 @@ const App = () => {
         </section>
     );
 }
-
 
 export default App;
