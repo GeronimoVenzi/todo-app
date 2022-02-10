@@ -8,8 +8,10 @@ const initialFormValues = {
 const Form = ({ todoAdd }) => {
     const [formValues, setFormValues] = useState(initialFormValues);
     const { title, description } = formValues;
+    const [error, setError] = useState(null);
+    const [succesMessage, setSuccesMessage] = useState(null);
 
-    const handlerInputChange = (e) => {
+    const handleInputChange = (e) => {
 
         const changedFormValues = {
             ...formValues,
@@ -22,37 +24,71 @@ const Form = ({ todoAdd }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('submit');
-        if (title === '' || description === '') {
+        if (title.trim() === '') {
+            setError('Debes indicar un título');
             return
+        }
+        if (description.trim() === '') {
+            setError('Debes indicar una descripción')
         }
         console.log(formValues);
         todoAdd(formValues);
+        setFormValues(initialFormValues);
+        setSuccesMessage('Agregado con éxito');
+
+
+        setTimeout(() => {
+            setSuccesMessage(null);
+        }, 2000)
+        setError(null);
     }
 
     return (
-        <form onSubmit={(e) => handleSubmit(e)} className="form text-light">
-            <input
-                type="text"
-                name="title"
-                placeholder="Title"
-                value={title}
-                className="form-control bg-dark text-white"
-                onChange={handlerInputChange}
-            />
-            <textarea
-                name="description"
-                cols="1"
-                placeholder="Description"
-                value={description}
-                className="form-control bg-dark text-white mt-2"
-                onChange={handlerInputChange}
-            />
-            <input
-                type='submit'
-                className="btn btn-info mt-2"
-                value='Add'
-            />
-        </form>
+        <div>
+            <form onSubmit={(e) => handleSubmit(e)} className="form text-light">
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Titulo"
+                    value={title}
+                    className="form-control bg-dark text-white"
+                    onChange={handleInputChange}
+                />
+                <textarea
+                    name="description"
+                    cols="1"
+                    placeholder="Description"
+                    value={description}
+                    className="form-control bg-dark text-white mt-2"
+                    onChange={handleInputChange}
+                />
+                <input
+                    type='submit'
+                    className="btn btn-info mt-2"
+                    value='Add'
+                />
+            </form>
+
+            {
+                error && (
+                    <div className="alert alert-danger mt-2">
+                        {error}
+                    </div>
+                )
+            }
+
+            {
+                succesMessage && (
+                    <div className="alert alert-success mt-2">
+                        {succesMessage}
+                    </div>
+                )
+            }
+
+
+        </div>
+
+
     );
 }
 

@@ -10,7 +10,7 @@ const Todo = ({ todo, todoDelete, todoToggleCompleted }) => {
                     </h3>
                     <button
                         onClick={() => todoToggleCompleted(todo.id)}
-                        className={`btn ${todo.completed ? 'btn-info' : 'btn-outline-info'} rounded-circle`}>
+                        className={`btn ${todo.completed ? 'btn-outline-success' : 'btn-success'} rounded-circle`}>
                         <i className="bi bi-check2-circle"></i>
                     </button>
                 </div>

@@ -21,12 +21,6 @@ const initialTodos = [
         title: 'Todo #3',
         description: 'Desc del Todo #3',
         completed: true
-    },
-    {
-        id: 4,
-        title: 'Todo #4',
-        description: 'Desc del Todo #4',
-        completed: false
     }
 ];
 
